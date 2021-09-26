@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Componente Transação teste snapshot 1`] = `
+<div
+  class="transacao-container"
+>
+  <p>
+    25/09/2021
+  </p>
+  <p>
+    deposito
+  </p>
+  <p>
+    R$ 
+    100
+  </p>
+</div>
+`;
