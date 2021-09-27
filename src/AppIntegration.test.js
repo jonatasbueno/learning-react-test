@@ -1,6 +1,7 @@
 import React from 'react';
 import App from './App';
-import { screen, render } from '@testing-library/react';
+import Conta from './conta/Conta';
+import { screen, render, fireEvent } from '@testing-library/react';
 import api from './api';
 
 jest.mock('./api');
@@ -25,5 +26,14 @@ describe('Integração', () => {
     render(<App />);
     expect(await screen.findByText('saque')).toBeInTheDocument();
     expect(screen.getByTestId('transacoes').children.length).toBe(2);
+  })
+
+  test('Chama funçao de realizar transação, quando o botão é clicado', () => {
+    const funçãoRealizarTransação = jest.fn(); // simulando click
+
+    render(<Conta saldo={1000} realizarTransacao={funçãoRealizarTransação} />); // passando funçao simulada
+    fireEvent.click(screen.getByText('Realizar operação'));
+
+    expect(funçãoRealizarTransação).toHaveBeenCalled(); // checando se a função foi cahamada pelo menos uma vez
   })
 })
