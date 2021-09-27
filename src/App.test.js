@@ -43,12 +43,14 @@ describe("Componente principal", () => {
        * é possível extrair da renderização de um component métodos para obter elementos html
        * ex: getByText, getByTextId e etc
        */
-      const { getByText, getByTestId, getByLabelText } = render(<App />);
+      // const { getByText, getByTestId, getByLabelText } = render(<App />);
 
-      const saldo = getByText('R$ 1000');
-      const transacao = getByLabelText('Saque');
-      const valor = getByTestId('valor');
-      const botaoTransacao = getByText('Realizar operação');
+      render(<App />);
+
+      const saldo = screen.getByText('R$ 1000'); // screen devolve todo o retorno de render(<App />)
+      const transacao = screen.getByLabelText('Saque');
+      const valor = screen.getByTestId('valor');
+      const botaoTransacao = screen.getByText('Realizar operação');
 
       expect(saldo.textContent).toBe('R$ 1000');
 
