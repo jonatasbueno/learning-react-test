@@ -3,7 +3,7 @@ import React from 'react';
  * render = usado para renderizar um component
  * screen = usado para acessar recursos da tela
  */
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 import App, { calcularNovoSaldo } from './App';
 
@@ -32,10 +32,35 @@ describe("Componente principal", () => {
   })
 
   describe('Quando eu realizo uma transação', () => {
-    it('que faz uma deposito', () => {
+    it('que é um deposito, o valor deve aumentar', () => {
       const valores = { transacao: 'deposito', valor: 50 };
 
       expect(calcularNovoSaldo(valores, 100)).toBe(150);
+    })
+
+    test('que é um saque, a transação dwve ser realizada', () => {
+      /**
+       * é possível extrair da renderização de um component métodos para obter elementos html
+       * ex: getByText, getByTextId e etc
+       */
+      const { getByText, getByTestId, getByLabelText } = render(<App />);
+
+      const saldo = getByText('R$ 1000');
+      const transacao = getByLabelText('Saque');
+      const valor = getByTestId('valor');
+      const botaoTransacao = getByText('Realizar operação');
+
+      expect(saldo.textContent).toBe('R$ 1000');
+
+      /**
+       * fireEvent é um disparador de evento do @testing-library/react para simular ação de usuário
+       * recebe a referência do elemento como primeiro parâmetro e value como segundo valor (target.value)
+       */
+      fireEvent.click(transacao, { target: { value: 'saque' } });
+      fireEvent.change(valor, { target: { value: 10 } });
+      fireEvent.click(botaoTransacao);
+
+      expect(saldo.textContent).toBe('R$ 990');
     })
   })
 })
